@@ -1,0 +1,101 @@
+<h3>{{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small></h3>
+
+<div class="row">
+  <div class="col-sm-4">
+    <button type="button" style="margin-top: 1em" class="btn btn-primary" (click)="Agregar();" *ngIf="AccionABMC == 'L'"> <span class="fas fa-plus" > </span> Agregar</button>
+  </div>
+</div>
+
+<div id="divTablaResultados" class="col-sm-12" *ngIf="AccionABMC == 'L' && Items?.length > 0">
+  <div class="row">
+    <div class="col-sm-8">
+      <h1>Resultado de Búsqueda</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>RazonSocial</th>
+            <th>Codigo</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of Items">
+            <td>{{item.PoveedorId}}</td>
+            <td>{{item.ProveedorRazonSocial | uppercase}}</td>
+            <td>{{item.ProveedorCodigo}}</td>
+            <td>{{item.ProveedorFecha | date:'dd/MM/yyyy'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Formulario de Registro -->
+
+<form name='FormRegistro' class="bg-light" [formGroup]="FormRegistro" *ngIf="AccionABMC != 'L'">
+
+  <fieldset>
+    <!--campo Id-->
+    <div class=" form-group row">
+      <label class="col-form-label col-sm-2 offset-sm-2" for="Id"> Id </label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" [attr.disabled]="true" formControlName="PoveedorId"/>
+      </div>
+    </div>
+
+    <!--campo RazonSocial-->
+    <div class=" form-group row">
+      <label class="col-form-label col-sm-2 offset-sm-2" for="ProveedorRazonSocial"> RazonSocial <span class="text-danger">*</span></label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control text-uppercase" formControlName="ProveedorRazonSocial"/>
+        <span class="text-danger" *ngIf="(FormRegistro.controls.ProveedorRazonSocial.touched || submitted) && FormRegistro.controls.ProveedorRazonSocial.errors?.required">Dato requerido.</span>
+        <span class="text-danger" *ngIf="FormRegistro.controls.ProveedorRazonSocial.errors?.minlength ||  FormRegistro.controls.ProveedorRazonSocial.errors?.maxlength ">Dato texto, 4 a 55 caracteres.</span>
+      </div>
+    </div>
+
+    <!--campo Codigo-->
+    <div class=" form-group row">
+      <label class="col-form-label col-sm-2 offset-sm-2" for="ProveedorCodigo"> Codigo <span class="text-danger">*</span></label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" formControlName="ProveedorCodigo"/>
+        <span class="text-danger" *ngIf="(FormRegistro.controls.ProveedorCodigo.touched || submitted) &&  FormRegistro.controls.ProveedorCodigo.errors?.required ">
+        Dato requerido
+      </span>
+        <span class="text-danger" *ngIf="(FormRegistro.controls.ProveedorCodigo.touched || submitted) && FormRegistro.controls.ProveedorCodigo.errors?.pattern">
+        Dato numérico, 1 a 12 dígitos.
+      </span>
+      </div>
+    </div>
+
+    <!--campo Fecha-->
+    <div class=" form-group row">
+      <label class="col-form-label col-sm-2 offset-sm-2" for="ProveedorFecha"> Fecha <span class="text-danger">*</span></label>
+      <div class="col-sm-6">
+        <input type="text" class="form-control" formControlName="ProveedorFecha"/>
+        <span class="text-danger" *ngIf="(FormRegistro.controls.ProveedorFecha.touched || submitted) && FormRegistro.controls.ProveedorFecha.errors?.required ">
+        Dato requerido
+      </span>
+        <span class="text-danger" *ngIf="(FormRegistro.controls.ProveedorFecha.touched || submitted) && FormRegistro.controls.ProveedorFecha.errors?.pattern">
+        Dato fecha, formato dd/mm/aaaa.
+      </span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+      <button type="button" class="btn btn-primary" (click)="Grabar()"><span class="fas fa-check" *ngIf=" AccionABMC == 'A' || AccionABMC == 'M' "></span> Grabar </button>
+      &nbsp;
+      <button type="button" class="btn btn-warning" (click)="Volver()"><span class="fas fa-undo"></span> Cancelar</button>
+    </div>
+
+  </div>
+</form>
